@@ -1,0 +1,117 @@
+Lost & Found Management System – An Example
+
+PROJECT OVERVIEW
+
+Project Title: Lost & Found Management System for College Tech Stack: MERN (MongoDB, Express, React, Node.js)
+
+The Lost & Found Management System is a web-based application designed to help students and staff report lost items and return found items within a college campus using a centralized digital platform.
+
+PROBLEM STATEMENT
+
+In a college campus, students often lose personal items such as ID cards, books, wallets, mobile phones, and accessories. The existing system depends on notice boards or word-of-mouth communication, which is inefficient and unreliable. There is no proper tracking system to verify ownership or monitor the status of lost and found items.
+
+PROPOSED SOLUTION
+
+A web application where users can report lost items and upload details of found items. Users can search and filter items based on category, date, and location. The Admin verifies items and updates the status (Lost → Found → Returned). This ensures transparency, faster recovery, and proper record maintenance.
+
+USER ROLES & PERMISSIONS
+
+A. User (Student / Staff):
+
+Can Register and Login.
+
+Can Report Lost Items.
+
+Can Report Found Items.
+
+Can Search Lost/Found Items.
+
+Can View Item Status.
+
+B. Admin (College Authority):
+
+Can Login to Secure Admin Dashboard.
+
+Can View All Lost and Found Reports.
+
+Can Verify Item Authenticity.
+
+Can Update Item Status (Lost → Found → Returned).
+
+Can Remove Fake or Duplicate Reports.
+
+DATABASE STRUCTURE (Schemas)
+
+A. User Schema:
+
+Name (String)
+
+Email (String, Unique)
+
+Password (Hashed)
+
+Role (String: 'user' or 'admin')
+
+B. LostItem Schema:
+
+Title (String, e.g., "College ID Card")
+
+Description (String)
+
+Category (String, e.g., "Documents", "Electronics")
+
+Location (String)
+
+DateLost (Date)
+
+ImageURL (String)
+
+Status (String: 'Lost', 'Found', 'Returned')
+
+UserID (Reference to User)
+
+C. FoundItem Schema:
+
+Title (String)
+
+Description (String)
+
+Location (String)
+
+DateFound (Date)
+
+ImageURL (String)
+
+Status (String)
+
+FEATURE WORKFLOW (User Journey)
+
+Login: User logs in to the system.
+
+Report: User submits details of a lost item.
+
+Database: Lost item details are stored in MongoDB with status 'Lost'.
+
+Found: Another user reports a matching found item.
+
+Admin Review: Admin verifies the item details.
+
+Update: Admin updates the status to 'Returned'.
+
+Notification: User checks status and retrieves the item.
+
+API ENDPOINTS (URL Rules)
+
+POST /api/auth/register -> Register new user
+
+POST /api/auth/login -> Login user
+
+POST /api/lost-items -> Report lost item
+
+POST /api/found-items -> Report found item
+
+GET /api/items -> View all items
+
+PUT /api/items/:id/status -> Update item status (Admin only)
+
+DELETE /api/items/:id -> Delete item (Admin only)
