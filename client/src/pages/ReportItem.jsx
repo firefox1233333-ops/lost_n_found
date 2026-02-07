@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { itemsAPI } from '../services/api';
+import Notification from '../components/Notification';
 import './ReportItem.css';
 
 const ReportItem = ({ itemType }) => {
@@ -14,6 +15,7 @@ const ReportItem = ({ itemType }) => {
     imageUrl: '',
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -28,9 +30,31 @@ const ReportItem = ({ itemType }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    if (formData.title.trim().length < 3) {
+      setError('Title must be at least 3 characters');
+      return false;
+    }
+    if (formData.description.trim().length < 10) {
+      setError('Description must be at least 10 characters');
+      return false;
+    }
+    if (formData.location.trim().length < 2) {
+      setError('Location must be at least 2 characters');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
+
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -38,7 +62,10 @@ const ReportItem = ({ itemType }) => {
         ...formData,
         type: itemType,
       });
-      navigate('/items');
+      setSuccess(`${itemType === 'lost' ? 'Lost' : 'Found'} item reported successfully!`);
+      setTimeout(() => {
+        navigate('/items');
+      }, 1500);
     } catch (err) {
       setError(err.message || 'Failed to report item');
     } finally {
@@ -48,6 +75,11 @@ const ReportItem = ({ itemType }) => {
 
   return (
     <div className="report-container">
+      <Notification
+        message={success}
+        type="success"
+        onClose={() => setSuccess('')}
+      />
       <div className="report-card">
         <h2>Report {itemType === 'lost' ? 'Lost' : 'Found'} Item</h2>
         {error && <div className="error-message">{error}</div>}

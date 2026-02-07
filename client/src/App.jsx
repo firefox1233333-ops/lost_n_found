@@ -3,10 +3,12 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Home from './pages/Home';
 import ItemsList from './pages/ItemsList';
 import ItemDetail from './pages/ItemDetail';
 import ReportItem from './pages/ReportItem';
 import AdminDashboard from './pages/AdminDashboard';
+import NotFound from './pages/NotFound';
 import './App.css';
 
 // Protected Route Component
@@ -45,7 +47,7 @@ function AppContent() {
       <Navbar />
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Navigate to="/items" />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/items" element={<ItemsList />} />
@@ -74,6 +76,7 @@ function AppContent() {
               </AdminRoute>
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </div>

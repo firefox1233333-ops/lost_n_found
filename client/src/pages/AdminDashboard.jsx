@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
 import { itemsAPI } from '../services/api';
+import Notification from '../components/Notification';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [statusUpdate, setStatusUpdate] = useState('');
+  const [success, setSuccess] = useState('');
+  const [stats, setStats] = useState({
+    total: 0,
+    lost: 0,
+    found: 0,
+    returned: 0,
+  });
 
   useEffect(() => {
     fetchItems();
@@ -18,6 +24,19 @@ const AdminDashboard = () => {
       setLoading(true);
       const data = await itemsAPI.getAll();
       setItems(data);
+      
+      // Calculate statistics
+      const lostCount = data.filter(item => item.status === 'Lost').length;
+      const foundCount = data.filter(item => item.status === 'Found').length;
+      const returnedCount = data.filter(item => item.status === 'Returned').length;
+      
+      setStats({
+        total: data.length,
+        lost: lostCount,
+        found: foundCount,
+        returned: returnedCount,
+      });
+      
       setError('');
     } catch (err) {
       setError(err.message);
@@ -30,7 +49,7 @@ const AdminDashboard = () => {
     try {
       await itemsAPI.updateStatus(itemId, newStatus);
       setError('');
-      setSelectedItem(null);
+      setSuccess('Item status updated successfully!');
       fetchItems(); // Refresh list
     } catch (err) {
       setError(err.message);
@@ -45,6 +64,7 @@ const AdminDashboard = () => {
     try {
       await itemsAPI.delete(itemId);
       setError('');
+      setSuccess('Item deleted successfully!');
       fetchItems(); // Refresh list
     } catch (err) {
       setError(err.message);
@@ -57,10 +77,36 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-container">
+      <Notification
+        message={success}
+        type="success"
+        onClose={() => setSuccess('')}
+      />
       <div className="admin-header">
         <h1>Admin Dashboard</h1>
         <p>Manage all lost and found items</p>
       </div>
+
+      {!loading && items.length > 0 && (
+        <div className="admin-stats">
+          <div className="stat-box">
+            <div className="stat-value">{stats.total}</div>
+            <div className="stat-label">Total Items</div>
+          </div>
+          <div className="stat-box stat-lost">
+            <div className="stat-value">{stats.lost}</div>
+            <div className="stat-label">Lost</div>
+          </div>
+          <div className="stat-box stat-found">
+            <div className="stat-value">{stats.found}</div>
+            <div className="stat-label">Found</div>
+          </div>
+          <div className="stat-box stat-returned">
+            <div className="stat-value">{stats.returned}</div>
+            <div className="stat-label">Returned</div>
+          </div>
+        </div>
+      )}
 
       {error && <div className="error-message">{error}</div>}
 

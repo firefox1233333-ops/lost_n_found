@@ -28,6 +28,12 @@
   align-items: end;
 }
 
+@media (max-width: 768px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .filter-input,
 .filter-select {
   padding: 10px;
