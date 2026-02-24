@@ -35,6 +35,13 @@ const Home = () => {
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
+      // Set default stats if error occurs (backend not running)
+      setStats({
+        total: 0,
+        lost: 0,
+        found: 0,
+        returned: 0,
+      });
     } finally {
       setLoading(false);
     }

@@ -16,7 +16,7 @@ A web application where users can report lost items and upload details of found 
 
 USER ROLES & PERMISSIONS
 
-A. User (Student / Staff):
+A. User (Student / Staff)
 
 Can Register and Login.
 
@@ -28,7 +28,40 @@ Can Search Lost/Found Items.
 
 Can View Item Status.
 
-B. Admin (College Authority):
+Can Claim a Found Item.
+
+B. Security Officer (Campus Security Staff)
+
+Role Description:
+The Security Officer manages items that are physically submitted or collected at the college security office, and coordinates between digital reports and real-world item handling.
+
+Permissions:
+
+Can Login to Secure Security Dashboard.
+
+Can Add Found Items that are physically submitted at the security desk.
+
+Can View All Lost and Found Reports.
+
+Can Verify item details before approval.
+
+Can Update Item Status to "At Security".
+
+Can Mark Item as "Handed Over" after returning it to the rightful owner.
+
+Can Assist Admin in verifying ownership.
+
+Restrictions:
+
+Cannot delete users.
+
+Cannot modify user roles.
+
+Cannot permanently remove system records.
+
+This role ensures accountability and proper physical item management.
+
+C. Admin (College Authority)
 
 Can Login to Secure Admin Dashboard.
 
@@ -36,9 +69,11 @@ Can View All Lost and Found Reports.
 
 Can Verify Item Authenticity.
 
-Can Update Item Status (Lost → Found → Returned).
+Can Update Item Status (Lost → Found → At Security → Returned).
 
 Can Remove Fake or Duplicate Reports.
+
+Can Manage Users (User / Security Officer).
 
 DATABASE STRUCTURE (Schemas)
 
@@ -66,7 +101,7 @@ DateLost (Date)
 
 ImageURL (String)
 
-Status (String: 'Lost', 'Found', 'Returned')
+Status (String: 'Lost', 'Found', 'At Security', 'Returned')
 
 UserID (Reference to User)
 
@@ -82,7 +117,7 @@ DateFound (Date)
 
 ImageURL (String)
 
-Status (String)
+Status (String: 'Lost', 'Found', 'At Security', 'Returned')
 
 FEATURE WORKFLOW (User Journey)
 

@@ -15,18 +15,27 @@ const apiRequest = async (endpoint, options = {}) => {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
 
-  const data = await response.json();
+    // Handle connection errors
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.message || `Server error: ${response.status}`);
+    }
 
-  if (!response.ok) {
-    throw new Error(data.message || 'Something went wrong');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle network/connection errors
+    if (error.message.includes('Failed to fetch') || error.message.includes('ERR_CONNECTION_REFUSED')) {
+      throw new Error('Cannot connect to server. Please make sure the backend is running on port 5000.');
+    }
+    throw error;
   }
-
-  return data;
 };
 
 // Auth API
