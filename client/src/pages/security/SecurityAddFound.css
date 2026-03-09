@@ -1,0 +1,89 @@
+/* Security Add Found Item form – M3-style inputs */
+.sec-add-found-card {
+  max-width: 640px;
+}
+
+.sec-add-found-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sec-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sec-form-row-inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.sec-form-group {
+  flex: 1;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sec-label {
+  font: var(--md-sys-typescale-label-large);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.sec-input,
+.sec-select,
+.sec-textarea {
+  padding: 12px 16px;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-container-high);
+  font: var(--md-sys-typescale-body-large);
+  color: var(--md-sys-color-on-surface);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sec-input:hover,
+.sec-select:hover {
+  border-color: var(--md-sys-color-on-surface-variant);
+}
+
+.sec-input:focus,
+.sec-select:focus,
+.sec-textarea:focus {
+  outline: none;
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary-container);
+}
+
+.sec-textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.sec-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .sec-add-found-form {
+    padding: 16px;
+  }
+
+  .sec-form-row-inline {
+    flex-direction: column;
+  }
+
+  .sec-form-group {
+    min-width: 0;
+  }
+}

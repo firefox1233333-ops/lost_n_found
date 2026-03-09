@@ -14,6 +14,12 @@ const sampleUsers = [
     role: 'admin',
   },
   {
+    name: 'Security Officer',
+    email: 'security@college.edu',
+    password: 'security123',
+    role: 'security',
+  },
+  {
     name: 'John Doe',
     email: 'john@college.edu',
     password: 'user123',
@@ -56,27 +62,7 @@ const sampleItems = [
     date: new Date('2025-01-08'),
     imageUrl: '',
     type: 'found',
-    status: 'Found',
-  },
-  {
-    title: 'Lost: Textbooks',
-    description: 'Two textbooks: "Introduction to Computer Science" and "Calculus II".',
-    category: 'Other',
-    location: 'Science Building - Room 201',
-    date: new Date('2025-01-06'),
-    imageUrl: '',
-    type: 'lost',
-    status: 'Lost',
-  },
-  {
-    title: 'Found: Keys',
-    description: 'Set of keys with a keychain. Found in the parking lot.',
-    category: 'Accessories',
-    location: 'Parking Lot B',
-    date: new Date('2025-01-09'),
-    imageUrl: '',
-    type: 'found',
-    status: 'Found',
+    status: 'At Security',
   },
   {
     title: 'Lost: AirPods',
@@ -127,6 +113,7 @@ const seedDatabase = async () => {
     console.log('\n✅ Database seeded successfully!');
     console.log('\nSample login credentials:');
     console.log('Admin: admin@college.edu / admin123');
+    console.log('Security Officer: security@college.edu / security123');
     console.log('User: john@college.edu / user123');
     console.log('User: jane@college.edu / user123');
     console.log('\nYou can now start the server and test the application.');

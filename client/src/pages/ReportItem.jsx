@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { itemsAPI } from '../services/api';
 import Notification from '../components/Notification';
-import './ReportItem.css';
+import './UserPages.css';
 
 const ReportItem = ({ itemType }) => {
   const [formData, setFormData] = useState({
@@ -51,21 +51,16 @@ const ReportItem = ({ itemType }) => {
     setError('');
     setSuccess('');
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
-
     try {
       await itemsAPI.create({
         ...formData,
         type: itemType,
       });
-      setSuccess(`${itemType === 'lost' ? 'Lost' : 'Found'} item reported successfully!`);
-      setTimeout(() => {
-        navigate('/items');
-      }, 1500);
+      setSuccess(`${itemType === 'lost' ? 'Lost' : 'Found'} item reported successfully.`);
+      setTimeout(() => navigate('/items'), 1500);
     } catch (err) {
       setError(err.message || 'Failed to report item');
     } finally {
@@ -74,18 +69,14 @@ const ReportItem = ({ itemType }) => {
   };
 
   return (
-    <div className="report-container">
-      <Notification
-        message={success}
-        type="success"
-        onClose={() => setSuccess('')}
-      />
-      <div className="report-card">
+    <div className="user-page">
+      <Notification message={success} type="success" onClose={() => setSuccess('')} />
+      <div className="user-report-card">
         <h2>Report {itemType === 'lost' ? 'Lost' : 'Found'} Item</h2>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Title *</label>
+        {error && <div className="user-banner-error" role="alert">{error}</div>}
+        <form onSubmit={handleSubmit} className="user-report-form">
+          <div className="user-report-row">
+            <label className="user-report-label">Title *</label>
             <input
               type="text"
               name="title"
@@ -93,23 +84,25 @@ const ReportItem = ({ itemType }) => {
               onChange={handleChange}
               required
               placeholder="e.g., College ID Card"
+              className="user-report-input"
             />
           </div>
-          <div className="form-group">
-            <label>Description *</label>
+          <div className="user-report-row">
+            <label className="user-report-label">Description *</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               required
-              rows="4"
+              rows={4}
               placeholder="Describe the item in detail..."
+              className="user-report-input user-report-textarea"
             />
           </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Category *</label>
-              <select name="category" value={formData.category} onChange={handleChange} required>
+          <div className="user-report-row user-report-row-inline">
+            <div className="user-report-group">
+              <label className="user-report-label">Category *</label>
+              <select name="category" value={formData.category} onChange={handleChange} required className="user-report-input user-report-select">
                 <option value="Documents">Documents</option>
                 <option value="Electronics">Electronics</option>
                 <option value="Accessories">Accessories</option>
@@ -117,8 +110,8 @@ const ReportItem = ({ itemType }) => {
                 <option value="Other">Other</option>
               </select>
             </div>
-            <div className="form-group">
-              <label>Location *</label>
+            <div className="user-report-group">
+              <label className="user-report-label">Location *</label>
               <input
                 type="text"
                 name="location"
@@ -126,37 +119,40 @@ const ReportItem = ({ itemType }) => {
                 onChange={handleChange}
                 required
                 placeholder="e.g., Library, Cafeteria"
+                className="user-report-input"
               />
             </div>
           </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Date *</label>
+          <div className="user-report-row user-report-row-inline">
+            <div className="user-report-group">
+              <label className="user-report-label">Date *</label>
               <input
                 type="date"
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
                 required
+                className="user-report-input"
               />
             </div>
-            <div className="form-group">
-              <label>Image URL (optional)</label>
+            <div className="user-report-group">
+              <label className="user-report-label">Image URL (optional)</label>
               <input
                 type="url"
                 name="imageUrl"
                 value={formData.imageUrl}
                 onChange={handleChange}
                 placeholder="https://example.com/image.jpg"
+                className="user-report-input"
               />
             </div>
           </div>
-          <div className="form-actions">
-            <button type="button" onClick={() => navigate('/items')} className="btn-secondary">
+          <div className="user-report-actions">
+            <button type="button" onClick={() => navigate('/items')} className="user-btn-clear">
               Cancel
             </button>
-            <button type="submit" disabled={loading} className="btn-primary">
-              {loading ? 'Submitting...' : `Report ${itemType === 'lost' ? 'Lost' : 'Found'} Item`}
+            <button type="submit" disabled={loading} className="user-btn-submit">
+              {loading ? 'Submitting…' : `Report ${itemType === 'lost' ? 'Lost' : 'Found'} Item`}
             </button>
           </div>
         </form>
@@ -166,4 +162,3 @@ const ReportItem = ({ itemType }) => {
 };
 
 export default ReportItem;
-

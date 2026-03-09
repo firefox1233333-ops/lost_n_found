@@ -34,9 +34,44 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
+// Check if user is security officer
+const requireSecurity = (req, res, next) => {
+  if (!req.user || req.user.role !== 'security') {
+    return res.status(403).json({ message: 'Security access only' });
+  }
+  next();
+};
+
+// Check if user is admin or security
+const requireAdminOrSecurity = (req, res, next) => {
+  if (!req.user || !['admin', 'security'].includes(req.user.role)) {
+    return res.status(403).json({ message: 'Admin or Security access only' });
+  }
+  next();
+};
+
+// Optionally attach user if valid token present (does not require auth)
+const optionalAuth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next();
+  }
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id).select('-password');
+  } catch (_) {
+    // ignore invalid token
+  }
+  next();
+};
+
 module.exports = {
   requireAuth,
+  optionalAuth,
   requireAdmin,
+  requireSecurity,
+  requireAdminOrSecurity,
 };
 
 

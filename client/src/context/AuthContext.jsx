@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
-      return { success: true };
+      return { success: true, user: data.user };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
-      return { success: true };
+      return { success: true, user: data.user };
     } catch (error) {
       return { success: false, error: error.message };
     }
@@ -63,6 +63,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAdmin = user?.role === 'admin';
+  const isSecurity = user?.role === 'security';
 
   return (
     <AuthContext.Provider
@@ -72,6 +73,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         isAdmin,
+        isSecurity,
         loading,
       }}
     >

@@ -35,7 +35,6 @@ const Home = () => {
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
-      // Set default stats if error occurs (backend not running)
       setStats({
         total: 0,
         lost: 0,
@@ -49,99 +48,104 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <div className="home-hero">
-        <h1>Lost & Found Management System</h1>
+      <section className="home-hero" aria-labelledby="home-title">
+        <h1 id="home-title">Lost & Found Management System</h1>
         <p>Helping you recover lost items and return found items on campus</p>
         {!user && (
           <div className="hero-actions">
-            <Link to="/register" className="btn-primary-large">
+            <Link to="/register" className="home-btn-primary">
               Get Started
             </Link>
-            <Link to="/items" className="btn-secondary-large">
+            <Link to="/items" className="home-btn-secondary">
               Browse Items
             </Link>
           </div>
         )}
-      </div>
+      </section>
 
       {!loading && (
-        <div className="stats-section">
+        <section className="stats-section" aria-label="Current statistics">
           <h2>Current Statistics</h2>
           <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-number">{stats.total}</div>
-              <div className="stat-label">Total Items</div>
+            <div className="home-stat-card">
+              <div className="home-stat-value">{stats.total}</div>
+              <div className="home-stat-label">Total Items</div>
             </div>
-            <div className="stat-card stat-lost">
-              <div className="stat-number">{stats.lost}</div>
-              <div className="stat-label">Lost Items</div>
+            <div className="home-stat-card stat-lost">
+              <div className="home-stat-value">{stats.lost}</div>
+              <div className="home-stat-label">Lost Items</div>
             </div>
-            <div className="stat-card stat-found">
-              <div className="stat-number">{stats.found}</div>
-              <div className="stat-label">Found Items</div>
+            <div className="home-stat-card stat-found">
+              <div className="home-stat-value">{stats.found}</div>
+              <div className="home-stat-label">Found Items</div>
             </div>
-            <div className="stat-card stat-returned">
-              <div className="stat-number">{stats.returned}</div>
-              <div className="stat-label">Returned Items</div>
+            <div className="home-stat-card stat-returned">
+              <div className="home-stat-value">{stats.returned}</div>
+              <div className="home-stat-label">Returned Items</div>
             </div>
           </div>
-        </div>
+        </section>
       )}
 
-      <div className="features-section">
-        <h2>How It Works</h2>
+      <section className="features-section" aria-labelledby="how-it-works">
+        <h2 id="how-it-works">How It Works</h2>
         <div className="features-grid">
           <div className="feature-card">
-            <div className="feature-icon">🔍</div>
+            <div className="feature-icon" aria-hidden>1</div>
             <h3>Report Lost Items</h3>
             <p>Lost something? Report it with details and location to help others find it.</p>
           </div>
           <div className="feature-card">
-            <div className="feature-icon">📦</div>
+            <div className="feature-icon" aria-hidden>2</div>
             <h3>Report Found Items</h3>
             <p>Found something? Report it so the owner can claim it.</p>
           </div>
           <div className="feature-card">
-            <div className="feature-icon">🔎</div>
+            <div className="feature-icon" aria-hidden>3</div>
             <h3>Search & Filter</h3>
             <p>Easily search and filter items by category, location, type, and status.</p>
           </div>
           <div className="feature-card">
-            <div className="feature-icon">✅</div>
+            <div className="feature-icon" aria-hidden>4</div>
             <h3>Admin Management</h3>
             <p>Admins can verify items and update status to track the recovery process.</p>
           </div>
         </div>
-      </div>
+      </section>
 
       {user && (
-        <div className="quick-actions">
-          <h2>Quick Actions</h2>
+        <section className="quick-actions" aria-labelledby="quick-actions-title">
+          <h2 id="quick-actions-title">Quick Actions</h2>
           <div className="actions-grid">
             <Link to="/report-lost" className="action-card">
-              <span className="action-icon">➕</span>
+              <span className="action-icon" aria-hidden>&rarr;</span>
               <span>Report Lost Item</span>
             </Link>
             <Link to="/report-found" className="action-card">
-              <span className="action-icon">📦</span>
+              <span className="action-icon" aria-hidden>&rarr;</span>
               <span>Report Found Item</span>
             </Link>
             <Link to="/items" className="action-card">
-              <span className="action-icon">🔍</span>
+              <span className="action-icon" aria-hidden>&rarr;</span>
               <span>Browse All Items</span>
             </Link>
             {user.role === 'admin' && (
               <Link to="/admin" className="action-card">
-                <span className="action-icon">⚙️</span>
+                <span className="action-icon" aria-hidden>&rarr;</span>
                 <span>Admin Dashboard</span>
               </Link>
             )}
+            {user.role === 'security' && (
+              <Link to="/security" className="action-card">
+                <span className="action-icon" aria-hidden>&rarr;</span>
+                <span>Security Dashboard</span>
+              </Link>
+            )}
           </div>
-        </div>
+        </section>
       )}
     </div>
   );
 };
 
 export default Home;
-

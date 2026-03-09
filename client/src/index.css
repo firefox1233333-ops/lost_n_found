@@ -1,1 +1,154 @@
+/* ==========================================================================
+   HomeBnb-inspired theme – Navy + Coral on Lavender
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
+:root {
+  /* ----- Primary (coral accent) ----- */
+  --md-sys-color-primary: #E87461;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #FFDAD4;
+  --md-sys-color-on-primary-container: #3B0907;
+  --md-sys-color-primary-fixed: #FFDAD4;
+  --md-sys-color-on-primary-fixed: #3B0907;
+
+  /* ----- Secondary (dark navy) ----- */
+  --md-sys-color-secondary: #1B2A4A;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #D6E4FF;
+  --md-sys-color-on-secondary-container: #0D1B33;
+
+  /* ----- Tertiary (slate blue) ----- */
+  --md-sys-color-tertiary: #3D5A80;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #D6E4FF;
+  --md-sys-color-on-tertiary-container: #001B3D;
+
+  /* ----- Error ----- */
+  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #FFDAD6;
+  --md-sys-color-on-error-container: #410002;
+
+  /* ----- Surface (light lavender scheme) ----- */
+  --md-sys-color-surface: #F4F0FA;
+  --md-sys-color-on-surface: #1B2A4A;
+  --md-sys-color-on-surface-variant: #5A6478;
+  --md-sys-color-outline: #8A91A0;
+  --md-sys-color-outline-variant: #C8CCD8;
+  --md-sys-color-surface-variant: #E2E4EE;
+
+  /* Surface container hierarchy */
+  --md-sys-color-surface-dim: #D8D5E0;
+  --md-sys-color-surface-bright: #FAF8FF;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #F5F3FB;
+  --md-sys-color-surface-container: #EFECF6;
+  --md-sys-color-surface-container-high: #E9E6F0;
+  --md-sys-color-surface-container-highest: #E3E0EA;
+
+  /* ----- Inverse ----- */
+  --md-sys-color-inverse-surface: #1B2A4A;
+  --md-sys-color-inverse-on-surface: #F2F0F4;
+  --md-sys-color-inverse-primary: #FFB4A8;
+
+  /* ----- State layer opacity ----- */
+  --md-sys-state-hover-opacity: 0.08;
+  --md-sys-state-focus-opacity: 0.12;
+  --md-sys-state-pressed-opacity: 0.12;
+  --md-sys-state-dragged-opacity: 0.16;
+
+  /* ----- Typography ----- */
+  --md-sys-typescale-display-large: 400 57px/64px 'Poppins', sans-serif;
+  --md-sys-typescale-display-medium: 400 45px/52px 'Poppins', sans-serif;
+  --md-sys-typescale-display-small: 400 36px/44px 'Poppins', sans-serif;
+  --md-sys-typescale-headline-large: 600 32px/40px 'Poppins', sans-serif;
+  --md-sys-typescale-headline-medium: 600 28px/36px 'Poppins', sans-serif;
+  --md-sys-typescale-headline-small: 600 24px/32px 'Poppins', sans-serif;
+  --md-sys-typescale-title-large: 600 22px/28px 'Poppins', sans-serif;
+  --md-sys-typescale-title-medium: 500 16px/24px 'Poppins', sans-serif;
+  --md-sys-typescale-title-small: 500 14px/20px 'Poppins', sans-serif;
+  --md-sys-typescale-body-large: 400 16px/24px 'Poppins', sans-serif;
+  --md-sys-typescale-body-medium: 400 14px/20px 'Poppins', sans-serif;
+  --md-sys-typescale-body-small: 400 12px/16px 'Poppins', sans-serif;
+  --md-sys-typescale-label-large: 500 14px/20px 'Poppins', sans-serif;
+  --md-sys-typescale-label-medium: 500 12px/16px 'Poppins', sans-serif;
+  --md-sys-typescale-label-small: 500 11px/16px 'Poppins', sans-serif;
+
+  /* ----- Shape ----- */
+  --md-sys-shape-corner-none: 0;
+  --md-sys-shape-corner-extra-small: 6px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 24px;
+  --md-sys-shape-corner-full: 9999px;
+
+  /* ----- Elevation ----- */
+  --md-sys-elevation-0: 0 0 0 0 rgba(0,0,0,0);
+  --md-sys-elevation-1: 0 1px 3px rgba(27,42,74,0.08), 0 1px 2px rgba(27,42,74,0.06);
+  --md-sys-elevation-2: 0 2px 8px rgba(27,42,74,0.10), 0 1px 3px rgba(27,42,74,0.06);
+  --md-sys-elevation-3: 0 4px 16px rgba(27,42,74,0.12), 0 1px 4px rgba(27,42,74,0.08);
+
+  /* Legacy / convenience aliases */
+  --color-primary: var(--md-sys-color-primary);
+  --color-primary-container: var(--md-sys-color-primary-container);
+  --color-on-primary: var(--md-sys-color-on-primary);
+  --color-on-primary-container: var(--md-sys-color-on-primary-container);
+  --color-surface: var(--md-sys-color-surface-container);
+  --color-surface-container: var(--md-sys-color-surface-container);
+  --color-surface-container-high: var(--md-sys-color-surface-container-high);
+  --color-surface-dim: var(--md-sys-color-surface-dim);
+  --color-on-surface: var(--md-sys-color-on-surface);
+  --color-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --color-outline: var(--md-sys-color-outline);
+  --color-outline-variant: var(--md-sys-color-outline-variant);
+  --color-error: var(--md-sys-color-error);
+  --color-error-container: var(--md-sys-color-error-container);
+  --color-success: #2E7D5B;
+  --color-info: #1B6B7D;
+  --color-background-app: var(--md-sys-color-surface);
+
+  /* Radius aliases (used by older component CSS) */
+  --radius-sm: var(--md-sys-shape-corner-extra-small);
+  --radius-md: var(--md-sys-shape-corner-medium);
+  --radius-lg: var(--md-sys-shape-corner-large);
+  --radius-xl: var(--md-sys-shape-corner-extra-large);
+  --radius-full: var(--md-sys-shape-corner-full);
+
+  /* Glass / elevation aliases (used by older component CSS) */
+  --glass-blur: 12px;
+  --glass-border: var(--md-sys-color-outline-variant);
+  --glass-shadow: var(--md-sys-elevation-1);
+  --elevation-3: var(--md-sys-elevation-3);
+
+  --topbar-height: 64px;
+  --sidebar-width: 280px;
+  --content-max-width: 1200px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: var(--md-sys-typescale-body-large);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.loading {
+  text-align: center;
+  padding: 48px 24px;
+  font: var(--md-sys-typescale-body-large);
+  color: var(--md-sys-color-on-surface-variant);
+}

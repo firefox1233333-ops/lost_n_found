@@ -1,9 +1,9 @@
 .not-found-container {
-  min-height: 70vh;
+  min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 24px;
 }
 
 .not-found-content {
@@ -11,36 +11,40 @@
 }
 
 .not-found-content h1 {
-  font-size: 120px;
+  font-size: 96px;
+  font-weight: 700;
   margin: 0;
-  color: #667eea;
-  font-weight: bold;
+  color: var(--color-primary);
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .not-found-content h2 {
-  font-size: 32px;
-  margin: 10px 0;
-  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 16px 0 8px 0;
+  color: var(--color-on-surface);
+  letter-spacing: -0.02em;
 }
 
 .not-found-content p {
-  font-size: 18px;
-  color: #666;
-  margin-bottom: 30px;
+  font-size: 15px;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 28px;
 }
 
 .btn-home {
   display: inline-block;
-  padding: 12px 30px;
-  background: #667eea;
-  color: white;
+  padding: 14px 28px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
   font-weight: 600;
-  transition: background 0.3s;
+  transition: opacity 0.2s;
 }
 
 .btn-home:hover {
-  background: #5568d3;
+  opacity: 0.92;
 }
-

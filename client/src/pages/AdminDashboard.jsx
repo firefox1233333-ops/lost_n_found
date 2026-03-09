@@ -24,16 +24,18 @@ const AdminDashboard = () => {
       setLoading(true);
       const data = await itemsAPI.getAll();
       setItems(data);
-      
+
       // Calculate statistics
-      const lostCount = data.filter(item => item.status === 'Lost').length;
-      const foundCount = data.filter(item => item.status === 'Found').length;
-      const returnedCount = data.filter(item => item.status === 'Returned').length;
-      
+      const lostCount = data.filter((item) => item.status === 'Lost').length;
+      const foundCount = data.filter((item) => item.status === 'Found').length;
+      const atSecurityCount = data.filter((item) => item.status === 'At Security').length;
+      const returnedCount = data.filter((item) => item.status === 'Returned').length;
+
       setStats({
         total: data.length,
         lost: lostCount,
         found: foundCount,
+        atSecurity: atSecurityCount,
         returned: returnedCount,
       });
       
@@ -101,6 +103,10 @@ const AdminDashboard = () => {
             <div className="stat-value">{stats.found}</div>
             <div className="stat-label">Found</div>
           </div>
+          <div className="stat-box">
+            <div className="stat-value">{stats.atSecurity}</div>
+            <div className="stat-label">At Security</div>
+          </div>
           <div className="stat-box stat-returned">
             <div className="stat-value">{stats.returned}</div>
             <div className="stat-label">Returned</div>
@@ -148,6 +154,7 @@ const AdminDashboard = () => {
                       >
                         <option value="Lost">Lost</option>
                         <option value="Found">Found</option>
+                        <option value="At Security">At Security</option>
                         <option value="Returned">Returned</option>
                       </select>
                       <button

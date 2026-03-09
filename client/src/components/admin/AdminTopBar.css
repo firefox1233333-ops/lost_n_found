@@ -1,0 +1,133 @@
+/* Material 3 Top App Bar (medium) */
+.m3-top-app-bar {
+  height: var(--topbar-height);
+  padding: 0 4px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  box-shadow: var(--md-sys-elevation-1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.m3-icon-button {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.m3-icon-button:hover {
+  background: rgba(27, 42, 74, 0.08);
+}
+
+.m3-icon-button:focus-visible {
+  outline: none;
+  background: rgba(27, 42, 74, 0.12);
+}
+
+/* CSS-only hamburger menu icon (no emoji) */
+.m3-icon-button-menu span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  box-shadow: 0 6px 0 currentColor, 0 -6px 0 currentColor;
+}
+
+.m3-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.m3-top-app-bar-nav {
+  flex-shrink: 0;
+}
+
+/* Hide menu button on desktop; sidebar is always visible */
+@media (min-width: 1024px) {
+  .m3-top-app-bar-nav {
+    display: none;
+  }
+
+  .m3-top-app-bar {
+    padding-left: 24px;
+  }
+}
+
+.m3-top-app-bar-title {
+  font: var(--md-sys-typescale-title-large);
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+  flex: 1;
+  min-width: 0;
+}
+
+.m3-top-app-bar-title:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.m3-top-app-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.m3-user-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 12px 4px 4px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-surface-container-high);
+  min-width: 0;
+}
+
+.m3-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font: var(--md-sys-typescale-label-large);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.m3-user-chip-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
+}
+
+.m3-user-chip-name {
+  font: var(--md-sys-typescale-label-large);
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m3-user-chip-role {
+  font: var(--md-sys-typescale-label-small);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+@media (max-width: 600px) {
+  .m3-user-chip-text {
+    display: none;
+  }
+}

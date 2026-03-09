@@ -32,11 +32,14 @@ router.post('/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const allowedRoles = ['user', 'security', 'admin'];
+    const finalRole = allowedRoles.includes(role) ? role : 'user';
+
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      role: role === 'admin' ? 'admin' : 'user', // prevent random roles
+      role: finalRole,
     });
 
     const token = generateToken(user._id, user.role);

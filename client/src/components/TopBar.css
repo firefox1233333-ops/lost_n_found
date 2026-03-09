@@ -1,0 +1,102 @@
+.topbar {
+  height: var(--topbar-height);
+  background: var(--md-sys-color-surface);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-sys-elevation-1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-inner {
+  height: 100%;
+  max-width: 100%;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-brand {
+  font: var(--md-sys-typescale-title-large);
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+}
+
+.topbar-brand:hover {
+  color: var(--md-sys-color-primary);
+}
+
+/* Guest (login/register) */
+.topbar-guest .topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-link {
+  padding: 10px 20px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font: var(--md-sys-typescale-label-large);
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.topbar-link:hover {
+  color: var(--md-sys-color-on-surface);
+  background: rgba(0,0,0,0.04);
+}
+
+.topbar-link-primary {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.topbar-link-primary:hover {
+  filter: brightness(0.95);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* Logged-in user */
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font: var(--md-sys-typescale-label-large);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topbar-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.topbar-user-name {
+  font: var(--md-sys-typescale-label-large);
+  color: var(--md-sys-color-on-surface);
+}
+
+.topbar-user-role {
+  font: var(--md-sys-typescale-label-small);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+@media (max-width: 640px) {
+  .topbar-user-info {
+    display: none;
+  }
+}

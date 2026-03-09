@@ -60,6 +60,9 @@ export const itemsAPI = {
     return apiRequest(`/items${queryParams ? `?${queryParams}` : ''}`);
   },
 
+  /** Items reported by the logged-in user only (requires auth) */
+  getMyReports: () => apiRequest('/items/my-reports'),
+
   getOne: (id) => apiRequest(`/items/${id}`),
 
   create: (itemData) =>
@@ -77,6 +80,24 @@ export const itemsAPI = {
   delete: (id) =>
     apiRequest(`/items/${id}`, {
       method: 'DELETE',
+    }),
+  claim: (id) =>
+    apiRequest(`/items/${id}/claim`, {
+      method: 'POST',
+    }),
+};
+
+// Users API (admin only)
+export const usersAPI = {
+  getAll: () =>
+    apiRequest('/users', {
+      method: 'GET',
+    }),
+
+  updateRole: (id, role) =>
+    apiRequest(`/users/${id}/role`, {
+      method: 'PUT',
+      body: JSON.stringify({ role }),
     }),
 };
 

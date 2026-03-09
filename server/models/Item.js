@@ -32,7 +32,7 @@ const itemSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Lost', 'Found', 'Returned'],
+      enum: ['Lost', 'Found', 'At Security', 'Returned'],
       default: 'Lost',
     },
     type: {
@@ -45,6 +45,16 @@ const itemSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+    },
+    claimedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    claimStatus: {
+      type: String,
+      enum: ['Pending', 'Approved', 'Rejected', null],
+      default: null,
     },
   },
   {

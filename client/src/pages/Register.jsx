@@ -40,16 +40,17 @@ const Register = () => {
     e.preventDefault();
     setError('');
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
 
     const result = await register(formData);
 
-    if (result.success) {
-      navigate('/items');
+    if (result.success && result.user) {
+      const role = result.user.role;
+      if (role === 'admin') navigate('/admin');
+      else if (role === 'security') navigate('/security');
+      else navigate('/');
     } else {
       setError(result.error || 'Registration failed');
     }
@@ -61,52 +62,68 @@ const Register = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h2>Register</h2>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Name</label>
+        {error && <div className="auth-error" role="alert">{error}</div>}
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="auth-row">
+            <label htmlFor="register-name" className="auth-label">Name</label>
             <input
+              id="register-name"
               type="text"
               name="name"
+              className="auth-input"
               value={formData.name}
               onChange={handleChange}
               required
               placeholder="Enter your name"
+              autoComplete="name"
             />
           </div>
-          <div className="form-group">
-            <label>Email</label>
+          <div className="auth-row">
+            <label htmlFor="register-email" className="auth-label">Email</label>
             <input
+              id="register-email"
               type="email"
               name="email"
+              className="auth-input"
               value={formData.email}
               onChange={handleChange}
               required
               placeholder="Enter your email"
+              autoComplete="email"
             />
           </div>
-          <div className="form-group">
-            <label>Password</label>
+          <div className="auth-row">
+            <label htmlFor="register-password" className="auth-label">Password</label>
             <input
+              id="register-password"
               type="password"
               name="password"
+              className="auth-input"
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="Enter your password"
-              minLength="6"
+              placeholder="Enter your password (min 6 characters)"
+              minLength={6}
+              autoComplete="new-password"
             />
           </div>
-          <div className="form-group">
-            <label>Role</label>
-            <select name="role" value={formData.role} onChange={handleChange}>
+          <div className="auth-row">
+            <label htmlFor="register-role" className="auth-label">Role</label>
+            <select
+              id="register-role"
+              name="role"
+              className="auth-select"
+              value={formData.role}
+              onChange={handleChange}
+            >
               <option value="user">User</option>
+              <option value="security">Security Officer</option>
               <option value="admin">Admin</option>
             </select>
-            <small>For demo purposes, you can register as admin</small>
+            <span className="auth-hint">For demo purposes, you can register as User, Security Officer, or Admin.</span>
           </div>
-          <button type="submit" disabled={loading} className="btn-primary">
-            {loading ? 'Registering...' : 'Register'}
+          <button type="submit" disabled={loading} className="auth-btn">
+            {loading ? 'Registering…' : 'Register'}
           </button>
         </form>
         <p className="auth-link">
@@ -118,6 +135,3 @@ const Register = () => {
 };
 
 export default Register;
-
-
-
