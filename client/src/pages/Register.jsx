@@ -59,9 +59,28 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h2>Register</h2>
+    <div className="auth-split">
+      {/* Left panel */}
+      <div className="auth-split-left">
+        <div className="auth-split-brand">
+          <div className="auth-split-logo">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+          </div>
+          <span className="auth-split-brand-name">Lost &amp; Found</span>
+        </div>
+        <div className="auth-split-hero">
+          <h2 className="auth-split-tagline">Create your account to get started.</h2>
+          <p className="auth-split-sub">Join your campus lost &amp; found community today.</p>
+        </div>
+      </div>
+
+      {/* Right: register form */}
+      <div className="auth-split-right">
+        <div className="auth-form-wrapper">
+        <h2 className="auth-form-title">Create Account</h2>
+        <p className="auth-form-subtitle">Fill in your details to register</p>
         {error && <div className="auth-error" role="alert">{error}</div>}
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="auth-row">
@@ -129,6 +148,7 @@ const Register = () => {
         <p className="auth-link">
           Already have an account? <Link to="/login">Login here</Link>
         </p>
+        </div>
       </div>
     </div>
   );

@@ -1,130 +1,168 @@
 /* ==========================================================================
-   HomeBnb-inspired theme – Navy + Coral on Lavender
+   Farmaku-inspired theme – Deep Navy on Light Gray
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
-  /* ----- Primary (coral accent) ----- */
-  --md-sys-color-primary: #E87461;
+  /* ----- Brand ----- */
+  --brand-primary: #2B3674;
+  --brand-primary-hover: #233169;
+  --brand-primary-light: #EEF2FF;
+  --brand-accent: #4318FF;
+  --brand-accent-light: #E9E3FF;
+
+  /* ----- Backgrounds ----- */
+  --bg-page: #F4F7FE;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #FFFFFF;
+  --bg-input: #F4F7FE;
+  --bg-hover: #F0F4FF;
+
+  /* ----- Text ----- */
+  --text-primary: #1B2559;
+  --text-secondary: #A3AED0;
+  --text-muted: #707EAE;
+
+  /* ----- Status ----- */
+  --status-success: #05CD99;
+  --status-success-bg: #E6FAF5;
+  --status-success-text: #0B6B52;
+  --status-warning: #FFCE20;
+  --status-warning-bg: #FFF8DC;
+  --status-warning-text: #7A5C00;
+  --status-error: #EE5D50;
+  --status-error-bg: #FDECEA;
+  --status-error-text: #B91C1C;
+  --status-info: #4318FF;
+  --status-info-bg: #EBE9FE;
+  --status-info-text: #3311B0;
+
+  /* ----- Border ----- */
+  --border: #E9EDF7;
+  --border-input: #E2E8F0;
+
+  /* ----- Shadows ----- */
+  --shadow-card: 14px 17px 40px 4px rgba(112, 144, 176, 0.08);
+  --shadow-sm: 0 1px 4px rgba(43, 54, 116, 0.06);
+  --shadow-nav: 14px 17px 40px 4px rgba(112, 144, 176, 0.08);
+  --shadow-dropdown: 0 8px 24px rgba(112, 144, 176, 0.2);
+
+  /* ----- Layout ----- */
+  --sidebar-width: 250px;
+  --topbar-height: 70px;
+  --content-max-width: 1200px;
+
+  /* ----- Shape ----- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* ================================================================
+     Legacy M3 aliases — kept so existing component CSS still resolves
+     ================================================================ */
+  --md-sys-color-primary: var(--brand-accent);
   --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #FFDAD4;
-  --md-sys-color-on-primary-container: #3B0907;
-  --md-sys-color-primary-fixed: #FFDAD4;
-  --md-sys-color-on-primary-fixed: #3B0907;
+  --md-sys-color-primary-container: var(--brand-accent-light);
+  --md-sys-color-on-primary-container: var(--brand-primary);
+  --md-sys-color-primary-fixed: var(--brand-accent-light);
+  --md-sys-color-on-primary-fixed: var(--brand-primary);
 
-  /* ----- Secondary (dark navy) ----- */
-  --md-sys-color-secondary: #1B2A4A;
+  --md-sys-color-secondary: var(--brand-primary);
   --md-sys-color-on-secondary: #ffffff;
-  --md-sys-color-secondary-container: #D6E4FF;
-  --md-sys-color-on-secondary-container: #0D1B33;
+  --md-sys-color-secondary-container: var(--brand-primary-light);
+  --md-sys-color-on-secondary-container: var(--brand-primary);
 
-  /* ----- Tertiary (slate blue) ----- */
-  --md-sys-color-tertiary: #3D5A80;
+  --md-sys-color-tertiary: var(--brand-accent);
   --md-sys-color-on-tertiary: #ffffff;
-  --md-sys-color-tertiary-container: #D6E4FF;
-  --md-sys-color-on-tertiary-container: #001B3D;
+  --md-sys-color-tertiary-container: var(--brand-accent-light);
+  --md-sys-color-on-tertiary-container: var(--brand-primary);
 
-  /* ----- Error ----- */
-  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-error: var(--status-error);
   --md-sys-color-on-error: #ffffff;
-  --md-sys-color-error-container: #FFDAD6;
-  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-error-container: var(--status-error-bg);
+  --md-sys-color-on-error-container: var(--status-error-text);
 
-  /* ----- Surface (light lavender scheme) ----- */
-  --md-sys-color-surface: #F4F0FA;
-  --md-sys-color-on-surface: #1B2A4A;
-  --md-sys-color-on-surface-variant: #5A6478;
-  --md-sys-color-outline: #8A91A0;
-  --md-sys-color-outline-variant: #C8CCD8;
-  --md-sys-color-surface-variant: #E2E4EE;
+  --md-sys-color-surface: var(--bg-page);
+  --md-sys-color-on-surface: var(--text-primary);
+  --md-sys-color-on-surface-variant: var(--text-muted);
+  --md-sys-color-outline: var(--border-input);
+  --md-sys-color-outline-variant: var(--border);
+  --md-sys-color-surface-variant: #EEF2FB;
 
-  /* Surface container hierarchy */
-  --md-sys-color-surface-dim: #D8D5E0;
-  --md-sys-color-surface-bright: #FAF8FF;
-  --md-sys-color-surface-container-lowest: #ffffff;
-  --md-sys-color-surface-container-low: #F5F3FB;
-  --md-sys-color-surface-container: #EFECF6;
-  --md-sys-color-surface-container-high: #E9E6F0;
-  --md-sys-color-surface-container-highest: #E3E0EA;
+  --md-sys-color-surface-dim: #E0E5F2;
+  --md-sys-color-surface-bright: #FFFFFF;
+  --md-sys-color-surface-container-lowest: var(--bg-card);
+  --md-sys-color-surface-container-low: var(--bg-page);
+  --md-sys-color-surface-container: var(--bg-page);
+  --md-sys-color-surface-container-high: #EEF2FB;
+  --md-sys-color-surface-container-highest: #E9EDF7;
 
-  /* ----- Inverse ----- */
-  --md-sys-color-inverse-surface: #1B2A4A;
-  --md-sys-color-inverse-on-surface: #F2F0F4;
-  --md-sys-color-inverse-primary: #FFB4A8;
+  --md-sys-color-inverse-surface: var(--brand-primary);
+  --md-sys-color-inverse-on-surface: #FFFFFF;
+  --md-sys-color-inverse-primary: var(--brand-accent-light);
 
-  /* ----- State layer opacity ----- */
   --md-sys-state-hover-opacity: 0.08;
   --md-sys-state-focus-opacity: 0.12;
   --md-sys-state-pressed-opacity: 0.12;
   --md-sys-state-dragged-opacity: 0.16;
 
-  /* ----- Typography ----- */
+  /* ----- Typography (Poppins) ----- */
   --md-sys-typescale-display-large: 400 57px/64px 'Poppins', sans-serif;
   --md-sys-typescale-display-medium: 400 45px/52px 'Poppins', sans-serif;
   --md-sys-typescale-display-small: 400 36px/44px 'Poppins', sans-serif;
-  --md-sys-typescale-headline-large: 600 32px/40px 'Poppins', sans-serif;
-  --md-sys-typescale-headline-medium: 600 28px/36px 'Poppins', sans-serif;
-  --md-sys-typescale-headline-small: 600 24px/32px 'Poppins', sans-serif;
-  --md-sys-typescale-title-large: 600 22px/28px 'Poppins', sans-serif;
-  --md-sys-typescale-title-medium: 500 16px/24px 'Poppins', sans-serif;
+  --md-sys-typescale-headline-large: 700 32px/40px 'Poppins', sans-serif;
+  --md-sys-typescale-headline-medium: 700 28px/36px 'Poppins', sans-serif;
+  --md-sys-typescale-headline-small: 700 24px/32px 'Poppins', sans-serif;
+  --md-sys-typescale-title-large: 600 20px/28px 'Poppins', sans-serif;
+  --md-sys-typescale-title-medium: 600 16px/24px 'Poppins', sans-serif;
   --md-sys-typescale-title-small: 500 14px/20px 'Poppins', sans-serif;
-  --md-sys-typescale-body-large: 400 16px/24px 'Poppins', sans-serif;
-  --md-sys-typescale-body-medium: 400 14px/20px 'Poppins', sans-serif;
+  --md-sys-typescale-body-large: 400 14px/22px 'Poppins', sans-serif;
+  --md-sys-typescale-body-medium: 400 13px/20px 'Poppins', sans-serif;
   --md-sys-typescale-body-small: 400 12px/16px 'Poppins', sans-serif;
   --md-sys-typescale-label-large: 500 14px/20px 'Poppins', sans-serif;
   --md-sys-typescale-label-medium: 500 12px/16px 'Poppins', sans-serif;
   --md-sys-typescale-label-small: 500 11px/16px 'Poppins', sans-serif;
 
-  /* ----- Shape ----- */
+  /* ----- Shape aliases ----- */
   --md-sys-shape-corner-none: 0;
-  --md-sys-shape-corner-extra-small: 6px;
-  --md-sys-shape-corner-small: 8px;
-  --md-sys-shape-corner-medium: 12px;
-  --md-sys-shape-corner-large: 16px;
-  --md-sys-shape-corner-extra-large: 24px;
-  --md-sys-shape-corner-full: 9999px;
+  --md-sys-shape-corner-extra-small: var(--radius-sm);
+  --md-sys-shape-corner-small: var(--radius-sm);
+  --md-sys-shape-corner-medium: var(--radius-md);
+  --md-sys-shape-corner-large: var(--radius-lg);
+  --md-sys-shape-corner-extra-large: var(--radius-xl);
+  --md-sys-shape-corner-full: var(--radius-full);
 
-  /* ----- Elevation ----- */
-  --md-sys-elevation-0: 0 0 0 0 rgba(0,0,0,0);
-  --md-sys-elevation-1: 0 1px 3px rgba(27,42,74,0.08), 0 1px 2px rgba(27,42,74,0.06);
-  --md-sys-elevation-2: 0 2px 8px rgba(27,42,74,0.10), 0 1px 3px rgba(27,42,74,0.06);
-  --md-sys-elevation-3: 0 4px 16px rgba(27,42,74,0.12), 0 1px 4px rgba(27,42,74,0.08);
+  /* ----- Elevation aliases ----- */
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1: var(--shadow-sm);
+  --md-sys-elevation-2: 0 4px 12px rgba(43, 54, 116, 0.08);
+  --md-sys-elevation-3: var(--shadow-dropdown);
 
-  /* Legacy / convenience aliases */
-  --color-primary: var(--md-sys-color-primary);
-  --color-primary-container: var(--md-sys-color-primary-container);
-  --color-on-primary: var(--md-sys-color-on-primary);
-  --color-on-primary-container: var(--md-sys-color-on-primary-container);
-  --color-surface: var(--md-sys-color-surface-container);
-  --color-surface-container: var(--md-sys-color-surface-container);
-  --color-surface-container-high: var(--md-sys-color-surface-container-high);
-  --color-surface-dim: var(--md-sys-color-surface-dim);
-  --color-on-surface: var(--md-sys-color-on-surface);
-  --color-on-surface-variant: var(--md-sys-color-on-surface-variant);
-  --color-outline: var(--md-sys-color-outline);
-  --color-outline-variant: var(--md-sys-color-outline-variant);
-  --color-error: var(--md-sys-color-error);
-  --color-error-container: var(--md-sys-color-error-container);
-  --color-success: #2E7D5B;
-  --color-info: #1B6B7D;
-  --color-background-app: var(--md-sys-color-surface);
+  /* ----- Convenience aliases ----- */
+  --color-primary: var(--brand-accent);
+  --color-primary-container: var(--brand-accent-light);
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: var(--brand-primary);
+  --color-surface: var(--bg-page);
+  --color-surface-container: var(--bg-page);
+  --color-surface-container-high: #EEF2FB;
+  --color-surface-dim: #E0E5F2;
+  --color-on-surface: var(--text-primary);
+  --color-on-surface-variant: var(--text-muted);
+  --color-outline: var(--border-input);
+  --color-outline-variant: var(--border);
+  --color-error: var(--status-error);
+  --color-error-container: var(--status-error-bg);
+  --color-success: var(--status-success);
+  --color-info: var(--status-info);
+  --color-background-app: var(--bg-page);
 
-  /* Radius aliases (used by older component CSS) */
-  --radius-sm: var(--md-sys-shape-corner-extra-small);
-  --radius-md: var(--md-sys-shape-corner-medium);
-  --radius-lg: var(--md-sys-shape-corner-large);
-  --radius-xl: var(--md-sys-shape-corner-extra-large);
-  --radius-full: var(--md-sys-shape-corner-full);
-
-  /* Glass / elevation aliases (used by older component CSS) */
   --glass-blur: 12px;
-  --glass-border: var(--md-sys-color-outline-variant);
-  --glass-shadow: var(--md-sys-elevation-1);
-  --elevation-3: var(--md-sys-elevation-3);
-
-  --topbar-height: 64px;
-  --sidebar-width: 280px;
-  --content-max-width: 1200px;
+  --glass-border: var(--border);
+  --glass-shadow: var(--shadow-sm);
+  --elevation-3: var(--shadow-dropdown);
 }
 
 * {
@@ -134,12 +172,13 @@
 }
 
 body {
-  font: var(--md-sys-typescale-body-large);
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-  line-height: 1.5;
+  background: var(--bg-page);
+  color: var(--text-primary);
 }
 
 #root {
@@ -149,6 +188,6 @@ body {
 .loading {
   text-align: center;
   padding: 48px 24px;
-  font: var(--md-sys-typescale-body-large);
-  color: var(--md-sys-color-on-surface-variant);
+  font-size: 14px;
+  color: var(--text-secondary);
 }

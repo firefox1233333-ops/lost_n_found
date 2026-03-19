@@ -1,0 +1,45 @@
+Lost & Found Management System — Database Schema (Current Implementation)
+
+Database: MongoDB (Mongoose)
+Collections (Models): User, Item
+
+Notes:
+- MongoDB uses collections (not SQL tables). The “tables” below describe each collection’s document structure.
+- Mongoose automatically adds `_id` to every document.
+- With `timestamps: true`, Mongoose automatically adds `createdAt` and `updatedAt`.
+
+====================================================================
+COLLECTION: users (Model: User)
+====================================================================
+
+| Field Name | Data Type | Constraints | Required | Description |
+|-----------|-----------|-------------|----------|-------------|
+| _id | ObjectId | Auto-generated, unique | Yes | Primary identifier for the user document. |
+| name | String | trim | Yes | Full name of the user. |
+| email | String | unique, lowercase, trim | Yes | User email (used for login). Must be unique. |
+| password | String | (hashed) | Yes | Hashed password stored in database. |
+| role | String | enum: 'user' \| 'security' \| 'admin'; default: 'user' | No | Role used for authorization and UI routing. |
+| createdAt | Date | Auto-generated (timestamps) | Yes | When the user record was created. |
+| updatedAt | Date | Auto-generated (timestamps) | Yes | When the user record was last updated. |
+
+====================================================================
+COLLECTION: items (Model: Item)
+====================================================================
+
+| Field Name | Data Type | Constraints | Required | Description |
+|-----------|-----------|-------------|----------|-------------|
+| _id | ObjectId | Auto-generated, unique | Yes | Primary identifier for the item document. |
+| title | String | trim | Yes | Short item title (e.g., “Student ID Card”). |
+| description | String | trim | Yes | Detailed description of the item and identifying information. |
+| category | String | enum: Documents/Electronics/Accessories/Clothing/Other; default: Other | No | Item category for filtering and reporting. |
+| location | String | trim | Yes | Location where item was lost/found (free text). |
+| date | Date | — | Yes | Date the item was lost/found (as provided in the report). |
+| imageUrl | String | default: '' | No | Optional image URL for the item. |
+| status | String | enum: Lost/Found/At Security/Returned; default: Lost | No | Current status of the item record. |
+| type | String | enum: 'lost' \| 'found' | Yes | Whether the report is a lost item report or found item report. |
+| userId | ObjectId | ref: User | Yes | The reporting user (creator of the item record). |
+| claimedBy | ObjectId | ref: User; default: null | No | User who claimed the item (used in claim flow). |
+| claimStatus | String | enum: Pending/Approved/Rejected/null; default: null | No | Claim status for the found item claim flow. |
+| createdAt | Date | Auto-generated (timestamps) | Yes | When the item record was created. |
+| updatedAt | Date | Auto-generated (timestamps) | Yes | When the item record was last updated. |
+

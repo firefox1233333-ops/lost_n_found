@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import '../admin/AdminTopBar.css';
+import { IconSearch, IconBell, IconMenu } from '../Icons';
+import '../TopBar.css';
 
-const roleLabel = { admin: 'Admin', security: 'Security Officer', user: 'User' };
+const PAGE_TITLES = {
+  '/': 'Home',
+  '/items': 'Items',
+  '/security': 'Security Dashboard',
+  '/security/add-found': 'Add Found Item',
+};
 
 function getInitials(name) {
   return name.trim().split(/\s+/).map((s) => s[0]).join('').toUpperCase().slice(0, 2);
@@ -10,23 +16,35 @@ function getInitials(name) {
 
 export default function SecurityTopBar({ onMenuClick }) {
   const { user } = useAuth();
+  const { pathname } = useLocation();
+  const title = PAGE_TITLES[pathname] || 'Security Dashboard';
+
   if (!user) return null;
 
   return (
-    <header className="m3-top-app-bar">
-      <button type="button" className="m3-icon-button m3-top-app-bar-nav m3-icon-button-menu" onClick={onMenuClick} aria-label="Open menu">
-        <span aria-hidden />
+    <header className="fm-topbar">
+      {/* Hamburger (mobile only) */}
+      <button type="button" className="fm-topbar-menu-btn" onClick={onMenuClick} aria-label="Open menu">
+        <IconMenu />
       </button>
-      <Link to="/security" className="m3-top-app-bar-title">
-        Lost & Found
-      </Link>
-      <div className="m3-top-app-bar-actions">
-        <div className="m3-user-chip">
-          <div className="m3-avatar" aria-hidden>{getInitials(user.name)}</div>
-          <div className="m3-user-chip-text">
-            <span className="m3-user-chip-name">{user.name}</span>
-            <span className="m3-user-chip-role">{roleLabel[user.role] || user.role}</span>
-          </div>
+
+      {/* Page title */}
+      <h1 className="fm-topbar-title">{title}</h1>
+
+      {/* Search */}
+      <div className="fm-topbar-search">
+        <IconSearch size={16} />
+        <input type="text" placeholder="Search anything" className="fm-topbar-search-input" />
+      </div>
+
+      {/* Actions */}
+      <div className="fm-topbar-actions">
+        <button type="button" className="fm-topbar-icon-btn" aria-label="Notifications">
+          <IconBell />
+        </button>
+        <div className="fm-topbar-user">
+          <div className="fm-topbar-avatar" aria-hidden>{getInitials(user.name)}</div>
+          <span className="fm-topbar-username">{user.name}</span>
         </div>
       </div>
     </header>

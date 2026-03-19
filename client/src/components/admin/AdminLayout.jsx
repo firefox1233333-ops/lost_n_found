@@ -9,9 +9,12 @@ export default function AdminLayout() {
 
   return (
     <div className="m3-admin-layout">
-      <AdminTopBar onMenuClick={() => setNavOpen((o) => !o)} />
-      <div className="m3-admin-body">
-        <AdminNav open={navOpen} onClose={() => setNavOpen(false)} />
+      {/* Sidebar on left */}
+      <AdminNav open={navOpen} onClose={() => setNavOpen(false)} />
+
+      {/* Right column: topbar + content */}
+      <div className="m3-admin-right">
+        <AdminTopBar onMenuClick={() => setNavOpen((o) => !o)} />
         <main className="m3-admin-main">
           <Outlet />
         </main>

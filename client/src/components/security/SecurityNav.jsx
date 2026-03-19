@@ -1,5 +1,10 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import {
+  IconHome, IconShield, IconItems, IconPlus,
+  IconSettings, IconHelp, IconLogout,
+} from '../Icons';
+import '../Sidebar.css';
 import '../admin/AdminNav.css';
 
 export default function SecurityNav({ open, onClose }) {
@@ -12,32 +17,52 @@ export default function SecurityNav({ open, onClose }) {
     navigate('/login');
   };
 
-  const linkClass = ({ isActive }) => `m3-nav-item ${isActive ? 'm3-nav-item-active' : ''}`;
+  const cls = ({ isActive }) => `fm-nav-item${isActive ? ' fm-nav-item-active' : ''}`;
 
   return (
     <>
-      <div className={`m3-nav-scrim ${open ? 'm3-nav-scrim-open' : ''}`} onClick={onClose} aria-hidden />
-      <aside className={`m3-nav-drawer ${open ? 'm3-nav-drawer-open' : ''}`}>
-        <div className="m3-nav-header">
-          <span className="m3-nav-header-title">Security</span>
+      <div className={`fm-nav-scrim ${open ? 'fm-nav-scrim-open' : ''}`} onClick={onClose} aria-hidden />
+      <aside className={`fm-sidebar fm-admin-nav ${open ? 'fm-admin-nav-open' : ''}`}>
+        {/* Brand */}
+        <div className="fm-sidebar-brand">
+          <div className="fm-sidebar-logo">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+          </div>
+          <span className="fm-sidebar-brand-name">Lost &amp; Found</span>
         </div>
-        <nav className="m3-nav-list">
-          <NavLink to="/" end className={linkClass} onClick={onClose}>
-            <span>Home</span>
-          </NavLink>
-          <NavLink to="/security" end className={linkClass} onClick={onClose}>
-            <span>Dashboard</span>
-          </NavLink>
-          <NavLink to="/security/add-found" className={linkClass} onClick={onClose}>
-            <span>Add Found Item</span>
-          </NavLink>
-          <NavLink to="/items" className={linkClass} onClick={onClose}>
-            <span>Items</span>
-          </NavLink>
-          <div className="m3-nav-spacer" />
-          <button type="button" className="m3-nav-item m3-nav-item-logout" onClick={handleLogout}>
-            <span>Log out</span>
-          </button>
+
+        <nav className="fm-sidebar-nav">
+          <div className="fm-nav-section">
+            <span className="fm-nav-section-label">Menu</span>
+
+            <NavLink to="/" end className={cls} onClick={onClose}>
+              <IconHome /><span>Home</span>
+            </NavLink>
+            <NavLink to="/security" end className={cls} onClick={onClose}>
+              <IconShield /><span>Dashboard</span>
+            </NavLink>
+            <NavLink to="/security/add-found" className={cls} onClick={onClose}>
+              <IconPlus /><span>Add Found Item</span>
+            </NavLink>
+            <NavLink to="/items" className={cls} onClick={onClose}>
+              <IconItems /><span>Items</span>
+            </NavLink>
+          </div>
+
+          <div className="fm-nav-section fm-nav-section-bottom">
+            <span className="fm-nav-section-label">Preferences</span>
+            <button type="button" className="fm-nav-item" onClick={onClose}>
+              <IconSettings /><span>Settings</span>
+            </button>
+            <button type="button" className="fm-nav-item" onClick={onClose}>
+              <IconHelp /><span>Help</span>
+            </button>
+            <button type="button" className="fm-nav-item fm-nav-item-logout" onClick={handleLogout}>
+              <IconLogout /><span>Log out</span>
+            </button>
+          </div>
         </nav>
       </aside>
     </>

@@ -1,9 +1,14 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import {
+  IconHome, IconDashboard, IconUsers, IconItems,
+  IconMyReports, IconReport, IconPlus,
+  IconSettings, IconHelp, IconLogout,
+} from './Icons';
 import './Sidebar.css';
 
 const Sidebar = () => {
-  const { user, logout, isAdmin, isSecurity } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,69 +18,62 @@ const Sidebar = () => {
 
   if (!user) return null;
 
-  const linkClass = ({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`;
+  const cls = ({ isActive }) => `fm-nav-item${isActive ? ' fm-nav-item-active' : ''}`;
 
   return (
-    <aside className="sidebar">
-      <nav className="sidebar-nav">
-        {/* Admin: Home, Dashboard, User Management, Items */}
-        {isAdmin && (
-          <>
-            <NavLink to="/" end className={linkClass}>
-              <span className="sidebar-label">Home</span>
-            </NavLink>
-            <NavLink to="/admin" end className={linkClass}>
-              <span className="sidebar-label">Dashboard</span>
-            </NavLink>
-            <NavLink to="/admin/users" className={linkClass}>
-              <span className="sidebar-label">User Management</span>
-            </NavLink>
-            <NavLink to="/items" className={linkClass}>
-              <span className="sidebar-label">Items</span>
-            </NavLink>
-          </>
-        )}
+    <aside className="fm-sidebar">
+      {/* Brand */}
+      <div className="fm-sidebar-brand">
+        <div className="fm-sidebar-logo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+        </div>
+        <span className="fm-sidebar-brand-name">Lost &amp; Found</span>
+      </div>
 
-        {/* Security: Home, Security Dashboard, Items */}
-        {isSecurity && !isAdmin && (
-          <>
-            <NavLink to="/" end className={linkClass}>
-              <span className="sidebar-label">Home</span>
-            </NavLink>
-            <NavLink to="/security" end className={linkClass}>
-              <span className="sidebar-label">Security Dashboard</span>
-            </NavLink>
-            <NavLink to="/items" className={linkClass}>
-              <span className="sidebar-label">Items</span>
-            </NavLink>
-          </>
-        )}
+      <nav className="fm-sidebar-nav">
+        {/* MENU section */}
+        <div className="fm-nav-section">
+          <span className="fm-nav-section-label">Menu</span>
 
-        {/* User: Home, Items, My Reports, Report Lost, Report Found */}
-        {!isAdmin && !isSecurity && (
-          <>
-            <NavLink to="/" end className={linkClass}>
-              <span className="sidebar-label">Home</span>
-            </NavLink>
-            <NavLink to="/items" className={linkClass}>
-              <span className="sidebar-label">Items</span>
-            </NavLink>
-            <NavLink to="/my-reports" className={linkClass}>
-              <span className="sidebar-label">My Reports</span>
-            </NavLink>
-            <NavLink to="/report-lost" className={linkClass}>
-              <span className="sidebar-label">Report Lost</span>
-            </NavLink>
-            <NavLink to="/report-found" className={linkClass}>
-              <span className="sidebar-label">Report Found</span>
-            </NavLink>
-          </>
-        )}
+          <NavLink to="/" end className={cls}>
+            <IconHome /><span>Home</span>
+          </NavLink>
 
-        <div className="sidebar-spacer" />
-        <button type="button" className="sidebar-link sidebar-link-logout" onClick={handleLogout}>
-          <span className="sidebar-label">Log out</span>
-        </button>
+          <NavLink to="/items" className={cls}>
+            <IconItems /><span>Items</span>
+          </NavLink>
+
+          <NavLink to="/my-reports" className={cls}>
+            <IconMyReports /><span>My Reports</span>
+          </NavLink>
+
+          <NavLink to="/report-lost" className={cls}>
+            <IconReport /><span>Report Lost</span>
+          </NavLink>
+
+          <NavLink to="/report-found" className={cls}>
+            <IconPlus /><span>Report Found</span>
+          </NavLink>
+        </div>
+
+        {/* PREFERENCES section */}
+        <div className="fm-nav-section fm-nav-section-bottom">
+          <span className="fm-nav-section-label">Preferences</span>
+
+          <button type="button" className="fm-nav-item">
+            <IconSettings /><span>Settings</span>
+          </button>
+
+          <button type="button" className="fm-nav-item">
+            <IconHelp /><span>Help</span>
+          </button>
+
+          <button type="button" className="fm-nav-item fm-nav-item-logout" onClick={handleLogout}>
+            <IconLogout /><span>Log out</span>
+          </button>
+        </div>
       </nav>
     </aside>
   );

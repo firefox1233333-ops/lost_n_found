@@ -9,9 +9,12 @@ export default function SecurityLayout() {
 
   return (
     <div className="m3-admin-layout">
-      <SecurityTopBar onMenuClick={() => setNavOpen((o) => !o)} />
-      <div className="m3-admin-body">
-        <SecurityNav open={navOpen} onClose={() => setNavOpen(false)} />
+      {/* Sidebar on left */}
+      <SecurityNav open={navOpen} onClose={() => setNavOpen(false)} />
+
+      {/* Right column: topbar + content */}
+      <div className="m3-admin-right">
+        <SecurityTopBar onMenuClick={() => setNavOpen((o) => !o)} />
         <main className="m3-admin-main">
           <Outlet />
         </main>
