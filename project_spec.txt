@@ -1,152 +1,141 @@
-Lost & Found Management System – An Example
+Lost & FounLostd Management System – Project Spec (Current Implementation)
 
 PROJECT OVERVIEW
 
-Project Title: Lost & Found Management System for College Tech Stack: MERN (MongoDB, Express, React, Node.js)
+Project Title: Lost & Found Management System for College
+Tech Stack: MERN (MongoDB, Express, React, Node.js) + Vite (client)
 
-The Lost & Found Management System is a web-based application designed to help students and staff report lost items and return found items within a college campus using a centralized digital platform.
+The Lost & Found Management System is a web-based application to help students/staff report lost items, record found items, browse/search all reports, and manage physical handover through Security and Admin workflows.
 
 PROBLEM STATEMENT
 
-In a college campus, students often lose personal items such as ID cards, books, wallets, mobile phones, and accessories. The existing system depends on notice boards or word-of-mouth communication, which is inefficient and unreliable. There is no proper tracking system to verify ownership or monitor the status of lost and found items.
+In a college campus, students often lose personal items such as ID cards, books, wallets, mobile phones, and accessories. Notice boards and word-of-mouth are inefficient and unreliable. A digital system is needed to track item reports, status changes, and basic claim handling.
 
-PROPOSED SOLUTION
+SOLUTION (AS IMPLEMENTED)
 
-A web application where users can report lost items and upload details of found items. Users can search and filter items based on category, date, and location. The Admin verifies items and updates the status (Lost → Found → Returned). This ensures transparency, faster recovery, and proper record maintenance.
+- Users can report lost items and found items (single “Item” model with a “type” field).
+- All roles can browse items, view details, and filter by type/status/category/search.
+- Users can view “My Reports” (items they created) and can submit a claim request on found items.
+- Security Officers can add found items from the security desk and update status to reflect physical handling (At Security / Returned).
+- Admin can manage users (roles) and remove fake/duplicate records.
+- UI is styled with a Material 3 theme and uses role-based layouts (no emoji icons).
 
 USER ROLES & PERMISSIONS
 
 A. User (Student / Staff)
-
-Can Register and Login.
-
-Can Report Lost Items.
-
-Can Report Found Items.
-
-Can Search Lost/Found Items.
-
-Can View Item Status.
-
-Can Claim a Found Item.
+- Can register and login.
+- Can report lost items and found items.
+- Can browse all items and view item details.
+- Can view “My Reports” (only their own reported items).
+- Can submit a claim request on a found item.
 
 B. Security Officer (Campus Security Staff)
-
 Role Description:
-The Security Officer manages items that are physically submitted or collected at the college security office, and coordinates between digital reports and real-world item handling.
+Manages items physically submitted/collected at the security office and keeps item status aligned with real-world handling.
 
 Permissions:
-
-Can Login to Secure Security Dashboard.
-
-Can Add Found Items that are physically submitted at the security desk.
-
-Can View All Lost and Found Reports.
-
-Can Verify item details before approval.
-
-Can Update Item Status to "At Security".
-
-Can Mark Item as "Handed Over" after returning it to the rightful owner.
-
-Can Assist Admin in verifying ownership.
+- Can login to Security dashboard.
+- Can add found items received at the security desk.
+- Can view items and update item status (e.g., At Security, Returned).
 
 Restrictions:
-
-Cannot delete users.
-
-Cannot modify user roles.
-
-Cannot permanently remove system records.
-
-This role ensures accountability and proper physical item management.
+- Cannot manage user roles.
+- Cannot delete users.
+- Cannot permanently remove system records.
 
 C. Admin (College Authority)
+- Can login to Admin dashboard.
+- Can view items and update item statuses.
+- Can remove fake/duplicate item reports (delete item records).
+- Can manage users and assign roles (user/security/admin).
 
-Can Login to Secure Admin Dashboard.
+DATABASE STRUCTURE (Schemas – Current Shape)
 
-Can View All Lost and Found Reports.
+A. User
+- name: String
+- email: String (unique)
+- password: String (hashed)
+- role: String ('user' | 'security' | 'admin')
 
-Can Verify Item Authenticity.
+B. Item (single collection for both “lost” and “found”)
+- title: String
+- description: String
+- category: String
+- location: String
+- date: Date
+- imageUrl: String (if provided)
+- type: String ('lost' | 'found')
+- status: String ('Lost' | 'Found' | 'At Security' | 'Returned')
+- userId: ObjectId (ref User)  // reporter/creator
 
-Can Update Item Status (Lost → Found → At Security → Returned).
+Claim-related fields (used for found items / claim flow):
+- claimedBy: ObjectId (ref User, optional)
+- claimStatus: String ('Pending' | 'Approved' | 'Rejected', optional)
 
-Can Remove Fake or Duplicate Reports.
+FEATURE WORKFLOW (IMPLEMENTED)
 
-Can Manage Users (User / Security Officer).
+1) Report an item (User)
+- User submits a lost/found report.
+- Item is saved with type = lost/found and a status (commonly 'Lost' for lost reports and 'Found' for found reports).
 
-DATABASE STRUCTURE (Schemas)
+2) Browse & search (All)
+- Users can browse all items and use filters/search.
 
-A. User Schema:
+3) “My Reports” (User)
+- Users can view items they personally reported (server-side filtered via a dedicated endpoint).
 
-Name (String)
+4) Claim a found item (User)
+- User submits a claim request on a found item.
+- Item shows claim state on the detail page (e.g., pending/claimed).
 
-Email (String, Unique)
+5) Physical handling (Security)
+- Security adds found items received at the desk.
+- Security updates status to 'At Security' when held at the desk and 'Returned' when handed over.
 
-Password (Hashed)
+6) Oversight (Admin)
+- Admin can update statuses, remove invalid entries, and manage user roles.
 
-Role (String: 'user' or 'admin')
+FRONTEND ROUTES (React Router v6)
 
-B. LostItem Schema:
+Public:
+- /                     Home (index route)
+- /items                Items list
+- /items/:id            Item detail
+- /login                Login
+- /register             Register
 
-Title (String, e.g., "College ID Card")
+Protected (requires login):
+- /report-lost          Report lost item
+- /report-found         Report found item
+- /my-reports           My reports
 
-Description (String)
+Role-protected:
+- /admin                Admin dashboard (admin only)
+- /admin/users          User management (admin only)
+- /security             Security dashboard (security only)
+- /security/add-found   Add found item (security only)
 
-Category (String, e.g., "Documents", "Electronics")
+UI / THEMING NOTES (Current)
 
-Location (String)
+- Material 3 design tokens are used for consistent styling across pages and navigation.
+- Role-based layout selection ensures Admin/Security always see their own navigation across the app.
+- Emoji icons were removed for a professional UI.
 
-DateLost (Date)
+API ENDPOINTS (SERVER)
 
-ImageURL (String)
+Auth:
+- POST /api/auth/register
+- POST /api/auth/login
 
-Status (String: 'Lost', 'Found', 'At Security', 'Returned')
+Items:
+- GET  /api/items                 (public) list items (supports filters via query params)
+- GET  /api/items/:id             (public) get item detail
+- POST /api/items                 (auth) create item (lost or found)
+- GET  /api/items/my-reports      (auth) list items reported by the logged-in user only
+- POST /api/items/:id/claim       (auth) submit claim request for a found item
+- PUT  /api/items/:id/status      (admin or security) update item status
+- DELETE /api/items/:id           (admin) delete item
 
-UserID (Reference to User)
-
-C. FoundItem Schema:
-
-Title (String)
-
-Description (String)
-
-Location (String)
-
-DateFound (Date)
-
-ImageURL (String)
-
-Status (String: 'Lost', 'Found', 'At Security', 'Returned')
-
-FEATURE WORKFLOW (User Journey)
-
-Login: User logs in to the system.
-
-Report: User submits details of a lost item.
-
-Database: Lost item details are stored in MongoDB with status 'Lost'.
-
-Found: Another user reports a matching found item.
-
-Admin Review: Admin verifies the item details.
-
-Update: Admin updates the status to 'Returned'.
-
-Notification: User checks status and retrieves the item.
-
-API ENDPOINTS (URL Rules)
-
-POST /api/auth/register -> Register new user
-
-POST /api/auth/login -> Login user
-
-POST /api/lost-items -> Report lost item
-
-POST /api/found-items -> Report found item
-
-GET /api/items -> View all items
-
-PUT /api/items/:id/status -> Update item status (Admin only)
-
-DELETE /api/items/:id -> Delete item (Admin only)
+Users (Admin):
+- GET  /api/users
+- PUT  /api/users/:id/role

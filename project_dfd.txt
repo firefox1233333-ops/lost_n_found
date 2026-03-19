@@ -1,0 +1,345 @@
+Lost & Found Management System — Data Flow Diagrams (Mermaid)
+
+How to use:
+- Copy any Mermaid block below into a Mermaid-enabled editor/viewer.
+- These DFDs are aligned with the current implementation described in project_spec.txt:
+  - Roles: User, Security Officer, Admin
+  - Core modules: Auth, Items, Claims, Admin User Management
+  - Data stores: MongoDB Users + Items
+
+============================================================
+DFD LEVEL 0 — CONTEXT DIAGRAM (Entire Project)
+============================================================
+
+```mermaid
+flowchart LR
+  %% External Entities
+  U[External Entity: User (Student/Staff)]
+  SO[External Entity: Security Officer]
+  A[External Entity: Admin]
+
+  %% Single process (entire system)
+  S((P0: Lost & Found Management System))
+
+  %% Primary data store (system boundary view)
+  DB[(D0: MongoDB Database\nUsers + Items)]
+
+  %% User flows
+  U -- "Register/Login, Report Lost/Found,\nBrowse Items, View Details,\nView My Reports, Claim Found Item" --> S
+  S -- "Auth result, Items list/detail,\nStatus updates, Claim status" --> U
+
+  %% Security flows
+  SO -- "Login, Add Found Item,\nUpdate Status (At Security/Returned),\nBrowse Items" --> S
+  S -- "Dashboard data,\nItems list/detail,\nUpdate confirmation" --> SO
+
+  %% Admin flows
+  A -- "Login, Manage Users/Roles,\nUpdate Item Status,\nDelete Item Records,\nBrowse Items" --> S
+  S -- "Admin dashboards,\nUser lists,\nItems list/detail,\nAction confirmations" --> A
+
+  %% Persistence
+  S <--> |"Read/Write Users + Items"| DB
+```
+
+============================================================
+DFD LEVEL 1 — SYSTEM DECOMPOSITION (Entire Project)
+============================================================
+
+```mermaid
+flowchart TB
+  %% External Entities
+  U[External Entity: User]
+  SO[External Entity: Security Officer]
+  A[External Entity: Admin]
+
+  %% Data Stores
+  D1[(D1: Users Collection)]
+  D2[(D2: Items Collection)]
+
+  %% Level-1 Processes
+  P1((P1: Authentication & Authorization))
+  P2((P2: Item Reporting & Management))
+  P3((P3: Browse/Search & Item Detail))
+  P4((P4: Claims Processing))
+  P5((P5: Role Dashboards))
+  P6((P6: Admin User Management))
+
+  %% Auth flows
+  U -->|"Register/Login credentials"| P1
+  SO -->|"Login credentials"| P1
+  A -->|"Login credentials"| P1
+  P1 -->|"JWT + user role + session state"| U
+  P1 -->|"JWT + user role + session state"| SO
+  P1 -->|"JWT + user role + session state"| A
+  P1 <-->|"Create/Read user records"| D1
+
+  %% Item reporting flows
+  U -->|"Create lost/found report"| P2
+  SO -->|"Add found item (desk intake)"| P2
+  A -->|"Update item status / Delete item"| P2
+  SO -->|"Update status (At Security/Returned)"| P2
+  P2 <-->|"Create/Update/Delete items"| D2
+  P2 -->|"Confirmation + updated item"| U
+  P2 -->|"Confirmation + updated item"| SO
+  P2 -->|"Confirmation + updated item"| A
+
+  %% Browsing and detail
+  U -->|"Search/filter, view list/detail"| P3
+  SO -->|"Search/filter, view list/detail"| P3
+  A -->|"Search/filter, view list/detail"| P3
+  P3 <-->|"Read items (filters)"| D2
+  P3 -->|"Items list/detail"| U
+  P3 -->|"Items list/detail"| SO
+  P3 -->|"Items list/detail"| A
+
+  %% Claims
+  U -->|"Submit claim (found item)"| P4
+  P4 <-->|"Update claim fields\n(claimedBy, claimStatus)"| D2
+  P4 -->|"Claim submitted / claim status"| U
+  P4 -->|"Claim visibility (via item detail)"| SO
+  P4 -->|"Claim visibility (via item detail)"| A
+
+  %% Dashboards (role-centric views)
+  U -->|"Navigate to My Reports"| P5
+  SO -->|"Security dashboard views"| P5
+  A -->|"Admin dashboard views"| P5
+  P5 <-->|"Read items + summaries"| D2
+  P5 <-->|"Read users (admin summaries)"| D1
+  P5 -->|"Dashboards + summaries"| U
+  P5 -->|"Dashboards + summaries"| SO
+  P5 -->|"Dashboards + summaries"| A
+
+  %% Admin user management
+  A -->|"List users / Update roles"| P6
+  P6 <-->|"Read/Update user roles"| D1
+  P6 -->|"User list + role update confirmation"| A
+
+  %% Security constraint note (conceptual)
+  %% Authorization checks happen through P1 before protected actions in P2/P5/P6.
+```
+
+============================================================
+DFD LEVEL 1.1 — MODULE/ROLE: USER (Student/Staff)
+============================================================
+
+```mermaid
+flowchart LR
+  U[External Entity: User]
+  P11((P1.1: User Module))
+  PAuth((P1: Auth))
+  PItems((P2/P3: Items Report + Browse))
+  PClaims((P4: Claim Found Item))
+
+  DUsers[(D1: Users)]
+  DItems[(D2: Items)]
+
+  %% Auth
+  U -->|"Register/Login"| PAuth
+  PAuth <-->|"Create/Read user"| DUsers
+  PAuth -->|"JWT + role=user"| U
+
+  %% User actions
+  U -->|"Report lost/found"| PItems
+  U -->|"Browse/filter items"| PItems
+  U -->|"View item detail"| PItems
+  PItems <-->|"Create/Read items"| DItems
+  PItems -->|"Items list/detail\n+ confirmations"| U
+
+  %% My Reports (dedicated endpoint)
+  U -->|"View My Reports"| P11
+  P11 -->|"GET my-reports (auth)"| DItems
+  DItems -->|"Only items where userId = current user"| P11
+  P11 -->|"My Reports list"| U
+
+  %% Claim flow
+  U -->|"Submit claim on found item"| PClaims
+  PClaims <-->|"Update claimedBy/claimStatus"| DItems
+  PClaims -->|"Claim submitted (Pending)"| U
+```
+
+============================================================
+DFD LEVEL 1.2 — MODULE/ROLE: SECURITY OFFICER
+============================================================
+
+```mermaid
+flowchart LR
+  SO[External Entity: Security Officer]
+  PAuth((P1: Auth))
+  PSec((P1.2: Security Module))
+  DUsers[(D1: Users)]
+  DItems[(D2: Items)]
+
+  %% Auth
+  SO -->|"Login"| PAuth
+  PAuth <-->|"Read user + role=security"| DUsers
+  PAuth -->|"JWT + role=security"| SO
+
+  %% Core security operations
+  SO -->|"View Security Dashboard\n(items + summaries)"| PSec
+  PSec <-->|"Read items"| DItems
+  PSec -->|"Dashboard data"| SO
+
+  SO -->|"Add found item (desk intake)"| PSec
+  PSec -->|"Create item type=found\nstatus=Found/At Security"| DItems
+  DItems -->|"Create confirmation"| PSec
+  PSec -->|"Confirmation + item record"| SO
+
+  SO -->|"Update status (At Security/Returned)"| PSec
+  PSec <-->|"Update item status"| DItems
+  PSec -->|"Update confirmation"| SO
+```
+
+============================================================
+DFD LEVEL 1.3 — MODULE/ROLE: ADMIN
+============================================================
+
+```mermaid
+flowchart LR
+  A[External Entity: Admin]
+  PAuth((P1: Auth))
+  PAdmin((P1.3: Admin Module))
+  DUsers[(D1: Users)]
+  DItems[(D2: Items)]
+
+  %% Auth
+  A -->|"Login"| PAuth
+  PAuth <-->|"Read user + role=admin"| DUsers
+  PAuth -->|"JWT + role=admin"| A
+
+  %% Admin dashboards / item oversight
+  A -->|"View Admin Dashboard\n(stats + recent items)"| PAdmin
+  PAdmin <-->|"Read items + summaries"| DItems
+  PAdmin <-->|"Read user summaries"| DUsers
+  PAdmin -->|"Dashboard data"| A
+
+  %% Item governance
+  A -->|"Update item status"| PAdmin
+  PAdmin <-->|"Update item status"| DItems
+  PAdmin -->|"Update confirmation"| A
+
+  A -->|"Delete fake/duplicate item"| PAdmin
+  PAdmin -->|"Delete item"| DItems
+  DItems -->|"Delete confirmation"| PAdmin
+  PAdmin -->|"Delete confirmation"| A
+
+  %% User management
+  A -->|"List users"| PAdmin
+  PAdmin <-->|"Read users"| DUsers
+  PAdmin -->|"User list"| A
+
+  A -->|"Update user role"| PAdmin
+  PAdmin <-->|"Update role"| DUsers
+  PAdmin -->|"Role update confirmation"| A
+```
+
+============================================================
+DFD LEVEL 1.4 — MODULE: AUTHENTICATION & AUTHORIZATION
+============================================================
+
+```mermaid
+flowchart TB
+  %% External Entities
+  U[User]
+  SO[Security Officer]
+  A[Admin]
+
+  %% Process
+  PAuth((P1.4: Auth Module))
+
+  %% Data Store
+  DUsers[(D1: Users)]
+
+  %% Registration
+  U -->|"Register (name, email, password, role*)"| PAuth
+  PAuth -->|"Hash password + create user"| DUsers
+  DUsers -->|"Created user"| PAuth
+  PAuth -->|"JWT + user profile"| U
+
+  %% Login
+  U -->|"Login (email, password)"| PAuth
+  SO -->|"Login (email, password)"| PAuth
+  A -->|"Login (email, password)"| PAuth
+  PAuth <-->|"Read user + verify password"| DUsers
+  PAuth -->|"JWT + role info"| U
+  PAuth -->|"JWT + role info"| SO
+  PAuth -->|"JWT + role info"| A
+
+  %% Authorization (conceptual)
+  PAuth -->|"Role checks gate protected actions\n(AdminRoute/SecurityRoute/ProtectedRoute)"| U
+  PAuth -->|"Role checks gate protected actions\n(AdminRoute/SecurityRoute/ProtectedRoute)"| SO
+  PAuth -->|"Role checks gate protected actions\n(AdminRoute/SecurityRoute/ProtectedRoute)"| A
+
+  %% Note: role* at registration exists in current UI for demo/testing.
+```
+
+============================================================
+DFD LEVEL 1.5 — MODULE: ITEMS (CREATE / READ / UPDATE STATUS / DELETE)
+============================================================
+
+```mermaid
+flowchart LR
+  %% External Entities
+  U[User]
+  SO[Security Officer]
+  A[Admin]
+
+  %% Processes
+  PCreate((P1.5a: Create Item))
+  PRead((P1.5b: Browse/Search + Detail))
+  PStatus((P1.5c: Update Status))
+  PDelete((P1.5d: Delete Item))
+
+  %% Data Store
+  DItems[(D2: Items)]
+
+  %% Create
+  U -->|"POST item (lost/found report)"| PCreate
+  SO -->|"POST item (found intake)"| PCreate
+  PCreate -->|"Insert item\n(type, status, userId)"| DItems
+  DItems -->|"Created item"| PCreate
+  PCreate -->|"Confirmation + item"| U
+  PCreate -->|"Confirmation + item"| SO
+
+  %% Read
+  U -->|"GET items (filters)"| PRead
+  SO -->|"GET items (filters)"| PRead
+  A -->|"GET items (filters)"| PRead
+  PRead <-->|"Query items"| DItems
+  PRead -->|"Items list/detail"| U
+  PRead -->|"Items list/detail"| SO
+  PRead -->|"Items list/detail"| A
+
+  %% Status update
+  SO -->|"PUT status (At Security/Returned)"| PStatus
+  A -->|"PUT status (any allowed)"| PStatus
+  PStatus <-->|"Update status field"| DItems
+  PStatus -->|"Update confirmation"| SO
+  PStatus -->|"Update confirmation"| A
+
+  %% Delete
+  A -->|"DELETE item"| PDelete
+  PDelete -->|"Remove item record"| DItems
+  DItems -->|"Delete confirmation"| PDelete
+  PDelete -->|"Delete confirmation"| A
+```
+
+============================================================
+DFD LEVEL 1.6 — MODULE: CLAIMS (User claims a found item)
+============================================================
+
+```mermaid
+flowchart TB
+  U[External Entity: User]
+  PClaim((P1.6: Claims Module))
+  DItems[(D2: Items)]
+
+  %% Claim submission
+  U -->|"Submit claim\n(POST /items/:id/claim)"| PClaim
+  PClaim -->|"Validate: must be found item\nand user logged-in"| PClaim
+  PClaim -->|"Write claim fields:\nclaimedBy=userId,\nclaimStatus=Pending"| DItems
+  DItems -->|"Updated item"| PClaim
+  PClaim -->|"Claim submitted (Pending)\n+ updated item view"| U
+
+  %% Visibility for other roles (via item reads)
+  PClaim -->|"Claim status visible\nthrough item detail/list reads"| DItems
+```
+
