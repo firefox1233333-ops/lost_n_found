@@ -55,10 +55,10 @@ const Login = () => {
       <div className="auth-split-right">
         <div className="auth-form-wrapper">
           <h2 className="auth-form-title">Welcome</h2>
-          <p className="auth-form-subtitle">Please select your role to log in</p>
+          {/* <p className="auth-form-subtitle">Please select your role to log in</p> */}
 
           {/* Role tabs */}
-          <div className="auth-role-tabs">
+          {/* <div className="auth-role-tabs">
             {ROLES.map((r) => (
               <button
                 key={r}
@@ -69,7 +69,7 @@ const Login = () => {
                 {r}
               </button>
             ))}
-          </div>
+          </div> */}
 
           {error && <div className="auth-error" role="alert">{error}</div>}
 
